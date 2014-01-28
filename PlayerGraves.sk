@@ -1,0 +1,81 @@
+variables:
+	{death.%player%.location} = 0
+	{timer.%player%.count} = 0
+	{list.grave %player%::*} = ""
+on death of a player:
+	set {death.%player%.location} to location of player
+	set block at victim to chest
+	
+	loop blocks in radius 2 around victim:
+		loop-block is chest
+		set {grave.%player%.location} to location of loop-block
+		set block 1 meter behind loop-block to fence
+		
+		
+	loop blocks in radius 2 around victim:
+		loop-block is fence
+		set block 1 meter above loop-block to cyan hard clay
+		
+	
+	loop blocks in radius 2 around victim:
+		loop-block is cyan hard clay
+		set block 1 meter above loop-block to fence
+		set block 1 meter left loop-block to fence
+		set block 1 meter right loop-block to fence
+		#show smoke at {death.%player%.location}
+		
+	
+	loop blocks in radius 1.5 around victim:
+		loop-block is air
+		altitude of loop-block is altitude of victim
+		set loop-block to chest
+		exit loop
+	add drops to block at player
+	clear drops
+	
+	#loop blocks in radius 1 around victim:
+		#loop-block is chest
+		#set {inventory.%player%::*} to loop-block's inventory
+	Spawn 1 zombie 1 in front of victim
+	
+	
+	
+	
+On rightclick on chest:
+	loop blocks in radius 7 around player:
+		loop-block-1 is chest
+
+		set {timer.%player%.count} to 10
+		message "Your grave will fade in 2mins, make sure you claim your items"
+		loop 10 times:
+			subtract 1 from {timer.%player%.count}
+			wait 1 second
+		set {timer.%player%.count} to 10
+		
+		loop items in loop-block-1:
+			set {list.grave %player%::*} to all items in loop-block-1
+			loop {timer.%player%.count} times:
+				wait 1 second
+				if {timer.%player%.count} = "":
+					set loop-block-1 to air
+			message "end of grave timer"
+					
+				
+
+			
+			
+	
+	
+	
+	
+	
+Command /back:
+	description: Sends you back to last death.
+	usage: /back
+	permission: skript.back
+	executable by: players and console
+	aliases: /death
+	trigger:
+		player has permission "skript.back"
+		teleport player to {death.%player%.location}
+		
