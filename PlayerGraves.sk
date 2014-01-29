@@ -97,3 +97,4 @@ Command /back:
 		player has permission "skript.back"
 		teleport player to {death.%player%.location}
 		
+#
