@@ -47,9 +47,9 @@ On rightclick on chest:
 	loop blocks in radius 7 around player:
 		loop-block-1 is chest
 		if location of loop-block-1 is {list.grave %player%::*}:
-			set {timer.%player%.count} to 10
+			set {timer.%player%.count} to 60
 			message "Your grave will fade in 2mins, make sure you claim your items"
-			loop 10 times:
+			loop 60 times:
 				subtract 1 from {timer.%player%.count}
 				wait 1 second
 			set {timer.%player%.count} to 0
@@ -57,7 +57,7 @@ On rightclick on chest:
 			
 			loop items in loop-block-1:
 				set {list.grave %player%::*} to all items in loop-block-1
-				set {timer.%player%.count} to 10
+				set {timer.%player%.count} to 0
 				loop {list.grave %player%::*}:
 					#send "%loop-index% | %loop-value% Was lost with your grave"
 					set loop-block-1 to air
