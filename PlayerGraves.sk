@@ -1,100 +1,97 @@
 variables:
-	{death.%player%.location} = 0
-	{timer.%player%.count} = 0
-	{list.grave %player%::*} = ""
+        {death.%player%.location} = 0
+        {timer.%player%.count} = 0
+        {list.grave %player%::*} = ""
 on death of a player:
-	set {death.%player%.location} to location of player
-	set block at victim to chest
-	
-	loop blocks in radius 2 around victim:
-		loop-block is chest
-		play wolf hearts on the clicked chest
-		set {grave.%player%.location} to location of loop-block
-		set {list.grave %player%::*} to {grave.%player%.location}
-		set block 1 meter behind loop-block to fence
-		
-		
-	loop blocks in radius 2 around victim:
-		loop-block is fence
-		set block 1 meter above loop-block to cyan hard clay
-		
-	
-	loop blocks in radius 2 around victim:
-		loop-block is cyan hard clay
-		set block 1 meter above loop-block to fence
-		set block 1 meter left loop-block to fence
-		set block 1 meter right loop-block to fence
-		#show smoke at {death.%player%.location}
-		
-	
-	loop blocks in radius 1.5 around victim:
-		loop-block is air
-		altitude of loop-block is altitude of victim
-		set loop-block to chest
-		exit loop
-	add drops to block at player
-	clear drops
-	
-	#loop blocks in radius 1 around victim:
-		#loop-block is chest
-		#set {inventory.%player%::*} to loop-block's inventory
-	Spawn 1 zombie 1 in front of victim
-	
-	
-	
-	
-On rightclick on chest:
-	loop blocks in radius 7 around player:
-		loop-block-1 is chest
-		if location of loop-block-1 is {list.grave %player%::*}:
-			set {timer.%player%.count} to 60
-			message "Your grave will fade in 2mins, make sure you claim your items"
-			loop 60 times:
-				subtract 1 from {timer.%player%.count}
-				wait 1 second
-			set {timer.%player%.count} to 0
-			message "Timer set to %{timer.%player%.count}%"
-			
-			loop items in loop-block-1:
-				set {list.grave %player%::*} to all items in loop-block-1
-				set {timer.%player%.count} to 0
-				loop {list.grave %player%::*}:
-					#send "%loop-index% | %loop-value% Was lost with your grave"
-					set loop-block-1 to air
-					clear {list.grave %player%::*}
-					clear dropped Items
-					
-					loop blocks in radius 1 around loop-block-1:
-						loop-block-2 is fence
-						set loop-block-2 to air
-					loop blocks in radius 2 around loop-block-1:
-						loop-block-2 is cyan hard clay
-						set loop-block-2 to air
-					loop blocks in radius 3 around loop-block-1:
-						loop-block-2 is fence
-						set loop-block-2 to air
-				
-				
-				
-				#message "end of grave timer"
-					
-				
+        set {death.%player%.location} to location of player
+        set block at victim to chest
+        
+        loop blocks in radius 2 around victim:
+                loop-block is chest
+                
+                set {grave.%player%.location} to location of loop-block
+                set {list.grave %player%::*} to {grave.%player%.location}
+                set block 1 meter behind loop-block to fence
+                
+                
+        loop blocks in radius 2 around victim:
+                loop-block is fence
+                set block 1 meter above loop-block to cyan hard clay
+                
+        
+        loop blocks in radius 2 around victim:
+                loop-block is cyan hard clay
+                set block 1 meter above loop-block to fence
+                set block 1 meter left loop-block to fence
+                set block 1 meter right loop-block to fence
+                #show smoke at {death.%player%.location}
+                
+        
+        loop blocks in radius 1.5 around victim:
+                loop-block is air
+                altitude of loop-block is altitude of victim
+                set loop-block to chest
+                exit loop
+        add drops to block at player
+        clear drops
+        
 
-			
-			
-	
-	
-	
-	
-	
+        Spawn 1 zombie 3 in front of victim
+        
+        
+        
+        
+On rightclick on chest:
+        loop blocks in radius 7 around player:
+                loop-block-1 is chest
+                if location of loop-block-1 is {list.grave %player%::*}:
+                        set {timer.%player%.count} to 60
+                        message "Your grave will fade in 1mins, make sure you claim your items"
+                        loop 12 times:
+                                wait 5 second
+                                subtract 5 from {timer.%player%.count}
+                                message "&4Grave vanish in: %{timer.%player%.count}%'s "
+                        set {timer.%player%.count} to 0
+                        
+                        loop items in loop-block-1:
+                                set {list.grave %player%::*} to all items in loop-block-1
+                                set {timer.%player%.count} to 0
+                        loop {list.grave %player%::*}:
+                                send "%loop-index% | %loop-value%"
+                                set loop-block-1 to air
+                                #clear {list.grave %player%::*}
+                                clear dropped Items
+                                
+                                loop blocks in radius 1 around loop-block-1:
+                                        loop-block-2 is fence
+                                        set loop-block-2 to air
+                                loop blocks in radius 2 around loop-block-1:
+                                        loop-block-2 is cyan hard clay
+                                        set loop-block-2 to air
+                                loop blocks in radius 3 around loop-block-1:
+                                        loop-block-2 is fence
+                                        set loop-block-2 to air
+                                
+                                
+                                
+                                #message "end of grave timer"
+                                        
+                                
+
+                        
+                        
+        
+        
+        
+        
+        
 Command /back:
-	description: Sends you back to last death.
-	usage: /back
-	permission: skript.back
-	executable by: players and console
-	aliases: /death
-	trigger:
-		player has permission "skript.back"
-		teleport player to {death.%player%.location}
-		
-#
+        description: Sends you back to last death.
+        usage: /back
+        permission: skript.back
+        executable by: players and console
+        aliases: /death
+        trigger:
+                player has permission "skript.back"
+                teleport player to {death.%player%.location}
+                
