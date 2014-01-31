@@ -1,90 +1,106 @@
 variables:
         {death.%player%.location} = 0
         {timer.%player%.count} = 0
-        {list.grave %player%::*} = ""
+        {list.grave %player%::*} = "" 
+        {lock.%player%} = ""
+        {b} = ""
 on death of a player:
         set {death.%player%.location} to location of player
-        set block at victim to chest
+        set {lock.%player%} to "%victim%"
+        set block 1 meter below victim to chest
         
         loop blocks in radius 2 around victim:
-                loop-block is chest
-                
+                loop-block-1 is chest 
+                set {b} to block 1 meter behind loop-block-1
+                set block 1 meter above loop-block-1 to stone slab
                 set {grave.%player%.location} to location of loop-block
                 set {list.grave %player%::*} to {grave.%player%.location}
-                set block 1 meter behind loop-block to fence
-                
+                loop blocks 1 behind loop-block-1:
+                        loop-block-2 is {b}
+                        set block 1 meter above loop-block-2 to nether fence
+                loop blocks in radius 2 around loop-block-1:
+                        loop-block-2 is stone slab
+                        #set block 1 meter in front of loop-block-2 to stone slab
                 
         loop blocks in radius 2 around victim:
-                loop-block is fence
-                set block 1 meter above loop-block to cyan hard clay
+                loop-block-1 is nether fence
+                set block 1 meter above loop-block to bedrock
                 
         
         loop blocks in radius 2 around victim:
-                loop-block is cyan hard clay
-                set block 1 meter above loop-block to fence
-                set block 1 meter left loop-block to fence
-                set block 1 meter right loop-block to fence
-                #show smoke at {death.%player%.location}
-                
+                loop-block-1 is bedrock
+                set block 1 meter above loop-block-1 to nether fence
+                set block 1 meter left loop-block-1 to nether fence
+                set block 1 meter right loop-block-1 to nether fence
+                set block 1 meter in front of loop-block-1 to grass
+                loop blocks in radius 1 around loop-block-1:
+                        loop-block-2 is grass
+                        set loop-block-2 to wall sign
+                        loop blocks in radius 1 around loop-block-1:
+                                loop-block-2 is wall sign
+                                set line 1 of loop-block-2 to "&4%victim%"
+                                set line 2 of loop-block-2 to "&bGrave"
+                                set line 3 of loop-block-2 to "~~~~~~~~~~~~~~~~~~~"
+                                set line 4 of loop-block-2 to "&eR.I.P"
         
-        loop blocks in radius 1.5 around victim:
-                loop-block is air
-                altitude of loop-block is altitude of victim
-                set loop-block to chest
-                exit loop
-        add drops to block at player
-        clear drops
-        
+        loop blocks in radius 3 around victim:
+                loop-block-1 is chest
+                add drops to loop-block-1's inventory
+                clear drops
+                Spawn 1 zombie 3 in front of victim
+                push zombie up
 
-        Spawn 1 zombie 3 in front of victim
-        
-        
-        
+
         
 On rightclick on chest:
         loop blocks in radius 7 around player:
                 loop-block-1 is chest
                 if location of loop-block-1 is {list.grave %player%::*}:
-                        set {timer.%player%.count} to 60
-                        message "Your grave will fade in 1mins, make sure you claim your items"
-                        loop 12 times:
-                                wait 5 second
-                                subtract 5 from {timer.%player%.count}
-                                message "&4Grave vanish in: %{timer.%player%.count}%'s "
-                        set {timer.%player%.count} to 0
-                        
-                        loop items in loop-block-1:
-                                set {list.grave %player%::*} to all items in loop-block-1
-                                set {timer.%player%.count} to 0
-                        loop {list.grave %player%::*}:
-                                send "%loop-index% | %loop-value%"
-                                set loop-block-1 to air
-                                #clear {list.grave %player%::*}
-                                clear dropped Items
-                                
-                                loop blocks in radius 1 around loop-block-1:
-                                        loop-block-2 is fence
-                                        set loop-block-2 to air
-                                loop blocks in radius 2 around loop-block-1:
-                                        loop-block-2 is cyan hard clay
-                                        set loop-block-2 to air
-                                loop blocks in radius 3 around loop-block-1:
-                                        loop-block-2 is fence
-                                        set loop-block-2 to air
-                                
-                                
-                                
-                                #message "end of grave timer"
+                        if "%player%" = "%{lock.%player%}%":
+                                message "Loot your grave"
+                        else:
+                                message "This grave belongs to {lock.%player%}"
+                                cancel the event
+        
+        
+On rightclick on chest: 
+        loop blocks in radius 7 around player:
+                loop-block-1 is chest
+                if location of loop-block-1 is {list.grave %player%::*}:
+                        if "%player%" = "%{lock.%player%}%":
+                                set {timer.%player%.count} to 60
+                                message "Your grave will fade in 1min, make sure you claim your items"
+                                loop 12 times:
+                                        play effect "smoke" at {death.%player%.location}
+                                        #play %number% of effect %string% with data %number% at %location%
                                         
-                                
+                                        wait 5 second
+                                        subtract 5 from {timer.%player%.count}
+                                        message "&4Grave vanish in: %{timer.%player%.count}%'s "
+                                set {timer.%player%.count} to 0
+                            
+                                loop items in loop-block-1:
+                                        set {list.grave %player%::*} to all items in loop-block-1
+                                        set {timer.%player%.count} to 0
+                                loop {list.grave %player%::*}:
+                                        send "%loop-index% | %loop-value%"
+                                        set loop-block-1 to air
+                                        #clear {list.grave %player%::*}
+                                        clear dropped Items
+                                    
+                                        loop blocks in radius 4 around loop-block-1:
+                                                loop-block-2 is nether fence
+                                                set loop-block-2 to air
+                                        loop blocks in radius 4 around loop-block-1:
+                                                loop-block-2 is bedrock
+                                                set loop-block-2 to air
+                                        loop blocks in radius 4 around loop-block-1:
+                                                loop-block-2 is nether fence
+                                                set loop-block-2 to air
+                                        loop blocks in radius 4 around loop-block-1:
+                                                loop-block-2 is stone slab
+                                                set loop-block-2 to air
 
-                        
-                        
-        
-        
-        
-        
-        
 Command /back:
         description: Sends you back to last death.
         usage: /back
