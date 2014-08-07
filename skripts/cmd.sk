@@ -1,0 +1,23 @@
+
+
+
+Command /gm1:
+        description: Short Hand for gamemode [mode val]
+        usage: /gm1
+        permission: skript.gm
+        executable by: players and console
+        aliases: /creative
+        trigger: 
+                player has permission "skript.gm"
+                make player execute command "/gamemode 1"
+                
+Command /gm0:
+        description: Short Hand for gamemode [mode val]
+        usage: /gm0
+        permission: skript.gm
+        executable by: players and console
+        aliases: /survival
+        trigger: 
+                player has permission "skript.gm"
+                make player execute command "/gamemode 0"
+                
