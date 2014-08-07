@@ -1,0 +1,51 @@
+#kits - V0.1
+#Tested on: Skript V2.1.2
+#Script by: 2toetommy
+#based on: MyKit
+
+Options:
+    P: &2[KITS]&a
+
+Command /kit [<text>,<text>,<text>:
+    description: Kits command
+    permission: skript.use
+    usage: /kit [arg1] [arg2] [arg3]
+    trigger:
+        if arg 1 is not set:
+            message "{@P} Kit list:"
+            message "{@P} %{kits.kitlist::*}%"
+        else if arg 1 is "get":
+            if {kits.kitlist::*} contains arg 2:
+                #message "{@P} kit contains %{kits.kitlist::*}%"
+                if player has permission "skript.kits.get":
+                    give {kits.%arg 1%.kit::*} to player
+                    message "{@P} %player% recived KIT:%arg 2%"
+                else:
+                    message "{@P} Permission denied:&b*.kits.get"
+            else:
+                message "{@P} Kits not found"
+        else if arg 1 is "create":
+            if player has permission "skript.kits.admin":
+                if arg 2 is not set:
+                    message "{@P} Failed to set Kit name"
+                else if {kits.%arg 2%.kit::*} doesn't contain arg 2:
+                    if arg 3 is not set:
+                        message "{@P} Must set arg 3 for permissions type | /kit create {t = true | f = false}"
+                    else:
+                        add arg 2 to {kits.kitlist::*}
+                        loop all items in player's inventory:
+                            clear {kits.%arg 2%.kit::*}
+                            add loop-item to {kits.%arg 2%.kit::*}
+                        message "{@P} Create Kit: &b%arg 2% with perm's %arg 3%"
+                if arg 3 is "f" or "false":
+                    set {kits.%arg 2%.kitpermb} to true
+                    set {kits.%arg 2%.kitpermb} to "{kits.kit.%arg 2%}"
+                    message "{@P} Permission: &bkits.kit.%arg 2%"
+                    
+                else if arg 3 is "t" or "true":
+                    set {kits.%arg 2%.kitpermc} to false
+                    message "{@P} Permission: &bkits.kit,usage"
+                else:
+                    message "{@P} Uknown permission set!"
+            else:
+                message "{@P} Permission Denied: &b*.kits.admin"
