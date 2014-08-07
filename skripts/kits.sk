@@ -28,32 +28,33 @@ Command /kit [<text>] [<text>] [<text>]:
                     else:
                         message "{@P} You can not use /kit get %arg 2%"
                 else:
-                    message "{@P} Kits not found"
+                    message "{@P} Unknown Kit: %arg 2%"
             else:
                 message "{@P} Permission denied:&b*.kits.get"
         else if arg 1 is "create":
             if player has permission "skript.kits.admin":
                 if arg 2 is not set:
                     message "{@P} Failed to set Kit name"
-                else if {kits.%arg 2%.kit::*} doesn't contain arg 2:
-                    if arg 3 is not set:
-                        message "{@P} Must set arg 3 for permissions type | /kit create {t = true | f = false}"
-                    else:
-                        add arg 2 to {kits.kitlist::*}
-                        loop all items in player's inventory:
-                            clear {kits.%arg 2%.kit::*}
-                            add loop-item to {kits.%arg 2%.kit::*}
-                        message "{@P} Create Kit: &b%arg 2% with perm's %arg 3%"
-                if arg 3 is "f" or "false":
-                    set {kits.%arg 2%.kitpermb} to true
-                    set {kits.%arg 2%.kitpermb} to "{kits.kit.%arg 2%}"
-                    message "{@P} Permission: &bkits.kit.%arg 2%"
-                    
-                else if arg 3 is "t" or "true":
-                    set {kits.%arg 2%.kitpermc} to false
-                    message "{@P} Permission: &bkits.kit,usage"
+                else if arg 3 is not set:
+                    message "{@P} Must set arg 3 for permissions type | /kit create {t = true | f = false}"
+                else if {kits.kitlist::*} contains arg 2:
+                    message "{@P} Kit already exists. Try /kit update %arg 2% %arg 3% "
                 else:
-                    message "{@P} Uknown permission set!"
+                    add arg 2 to {kits.kitlist::*}
+                    loop all items in player's inventory:
+                        clear {kits.%arg 2%.kit::*}
+                        add loop-item to {kits.%arg 2%.kit::*}
+                    message "{@P} Create Kit: &b%arg 2% with perm's %arg 3%"
+                    if arg 3 is "f" or "false":
+                        set {kits.%arg 2%.kitpermb} to true
+                        set {kits.%arg 2%.kitpermb} to "{kits.kit.%arg 2%}"
+                        message "{@P} Permission: &bkits.kit.%arg 2%"
+                        
+                    else if arg 3 is "t" or "true":
+                        set {kits.%arg 2%.kitpermc} to false
+                        message "{@P} Permission: &bkits.kit,usage"
+                    else:
+                        message "{@P} Uknown permission set!"
             else:
                 message "{@P} Permission Denied: &b*.kits.admin"
         else:
