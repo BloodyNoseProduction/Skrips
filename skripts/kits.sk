@@ -1,7 +1,7 @@
 #kits - V0.1
 #Tested on: Skript V2.1.2
 #Script by: 2toetommy
-#based on: MyKit
+#Based on: MyKit by Nfell2009
 
 Options:
     P: &2[KITS]&a
@@ -15,24 +15,24 @@ Command /kit [<text>] [<text>] [<text>]:
             message "{@P} Kit list:"
             message "{@P} %{kits.kitlist::*}%"
         else if arg 1 is "get":
-            if player has permission "skript.kits.get":
+            if player has permission "kits.kits.get":
                 if arg 2 is not set:
                     message "{@P} You must name the kit!"
+                else if {kits.kitlist::*} doesn't contain arg 2:
+                    message "{@P} Kit not found"
                 else if {kits.%arg 2%.kitpermb::*} = true:
-                    if player has permission "skript.kit.use":
+                    if player has permission "kits.kit.%arg 2%":
                         if arg 3 is not set:
                             give {kits.%arg 2%.kit::*} to the player
                             message "{@P} %player% received - &aKit: &b%arg 2%"
                         else:
-                            message "{@P} Can not give with this function, try /kit give %arg 3%"
+                            message "{@P} Can not give with this function, try /kit give %arg 2%"
                     else:
                         message "{@P} You can not use /kit get %arg 2%"
-                else:
-                    message "{@P} Unknown Kit: %arg 2%"
             else:
                 message "{@P} Permission denied:&b*.kits.get"
         else if arg 1 is "create":
-            if player has permission "skript.kits.admin":
+            if player has permission "kits.kit.admin":
                 if arg 2 is not set:
                     message "{@P} Failed to set Kit name"
                 else if arg 3 is not set:
