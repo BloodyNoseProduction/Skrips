@@ -71,7 +71,7 @@ On rightclick on chest:
                                 set {timer.%player%.count} to 60
                                 message "Your grave will fade in 1min, make sure you claim your items"
                                 loop 12 times:
-                                        play effect "smoke" at {death.%player%.location}
+                                        play smoke at {death.%player%.location}
                                         #play %number% of effect %string% with data %number% at %location%
                                         
                                         wait 5 second
@@ -84,10 +84,13 @@ On rightclick on chest:
                                         set {timer.%player%.count} to 0
                                 loop {list.grave %player%::*}:
                                         send "%loop-index% | %loop-value%"
-                                        set loop-block-1 to air
+                                        set loop-block-1 to grass
                                         #clear {list.grave %player%::*}
                                         clear dropped Items
-                                    
+                                        
+                                        loop blocks in radius 4 around loop-block-1:
+                                                loop-block-2 is wall sign
+                                                set loop-block-2 to air
                                         loop blocks in radius 4 around loop-block-1:
                                                 loop-block-2 is nether fence
                                                 set loop-block-2 to air
@@ -100,6 +103,7 @@ On rightclick on chest:
                                         loop blocks in radius 4 around loop-block-1:
                                                 loop-block-2 is stone slab
                                                 set loop-block-2 to air
+                                                delete all dropped items										
 
 Command /back:
         description: Sends you back to last death.
