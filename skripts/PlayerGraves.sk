@@ -114,4 +114,6 @@ Command /back:
         trigger:
                 player has permission "skript.back"
                 teleport player to {death.%player%.location}
+                wait 1 tick
+                thrust player backwards at speed 0.5
                 
