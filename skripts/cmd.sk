@@ -9,7 +9,7 @@ Command /gm1:
         aliases: /creative
         trigger: 
                 player has permission "skript.gm"
-                make player execute command "/gamemode 1"
+                set player's game mode to creative
                 
 Command /gm0:
         description: Short Hand for gamemode [mode val]
@@ -19,5 +19,5 @@ Command /gm0:
         aliases: /survival
         trigger: 
                 player has permission "skript.gm"
-                make player execute command "/gamemode 0"
+                set player's game mode to survival
                 
