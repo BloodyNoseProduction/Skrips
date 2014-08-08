@@ -1,0 +1,155 @@
+#kits - V0.1
+#Tested on: Skript V2.1.2
+#Script by: 2toetommy
+
+variables:
+        {chest.%player%.location::*} = ""
+        {sign.%player%.location::*} = ""
+        {chest.lock.%player%} = ""
+        {sign.lock.%player%} = ""
+        {sign.name} = ""
+
+Options:
+    P: &2[Signs]&a
+    
+
+On sign change:
+    loop blocks in radius 2 around player:
+        loop-block-1 is chest
+        set {chest.%player%.location::*} to location of loop-block-1
+        set {chest.lock.%player%} to "%player%"
+    loop blocks in radius 2 around player:
+        loop-block-1 is sign
+        if line 1 of loop-block-1 is "":
+            message "&e{@P} Empty Sign !"
+            set line 1 of loop-block-1 to "&e%player%"
+            set {sign.name} to player
+            set line 2 of loop-block-1 to "&4Locked"
+            set {sign.lock.%player%} to "%player%"
+            set {sign.%player%.location::*} to location of loop-block-1
+    
+
+On place of sign:
+    cancel the event
+    loop blocks in radius 2 around player:
+        loop-block-1 is sign
+        loop all blocks in radius 2 around loop-block-1:
+            if "%player%" = "%{chest.lock.%player%}%":
+                message "IDK"
+            else:
+                uncancel the event
+                    
+                    
+                    
+
+On rightclick on sign:
+    if player is holding a iron ingot:
+        loop blocks in radius 2 around player:
+            loop-block-1 is sign
+            if location of loop-block-1 = {sign.%player%.location::*}:
+                if "%player%" = "%{sign.lock.%player%}%":
+                    #set line 1 of loop-block-1 to "&e%player%"
+                    #set line 2 of loop-block-1 to "&4Unlocked"
+                    open chest with 1 row named "<gold>LockGUI" to player
+                    wait 1 tick
+                    format slot 0 of player with 1 of iron ingot named "lock" with lore "Lock chest|Owner access only" to run "consolesudo %player% lockchest"
+                    format slot 1 of player with 1 of white wool named "Clear" with lore "Unlock chest|Open access" to run "consolesudo %player% unlockchest"
+                    format slot 2 of player with 1 of TNT named "Destroy" with lore "Destroy locked chest" to run "consolesudo %player% destroychest"
+                else:
+                    message "{@P}1 This chest belongs to %{sign.name}% "
+            else:
+                message "{@P}2 This chest belongs to %{sign.name}% "
+
+On rightclick on chest:
+    loop blocks in radius 4 around player:
+        loop-block-1 is chest
+        if "%player%" = "%{chest.lock.%player%}%":
+            loop blocks in radius 1 around loop-block-1:
+                if "%player%" = "%{sign.lock.%player%}%":
+                    message "{@P}: This is your chest."
+        else:
+            message "{@P} This chest belongs to %{sign.name}% "
+            cancel the event
+        
+
+
+On break of chest:
+    loop blocks in radius 7 around player:
+        loop-block-1 is chest
+        if "%player%" = "%{chest.lock.%player%}%":
+            if "%player%" = "%{sign.lock.%player%}%":
+                if line 3 of loop-block-1 does not contain "&4Locked":
+                    cancel the event
+                    message "{@P} &rPermission Denied: Use a Iron Ingot on this chest sign and choose destroy."
+                else:
+                    cancel the event
+            else:
+                cancel the event
+                message "&4{@P} &rPermission Denied: sign belongs to %{sign.name}%"
+        else:
+            cancel the event
+            message "&4{@P} &rPermission Denied: chest belongs to %{sign.name}%"
+
+On break of sign:
+    loop blocks in radius 7 around player:
+        loop-block-1 is sign
+        if "%player%" = "%{sign.lock.%player%}%":
+            if line 3 of loop-block-1 does not contain "&4Locked":
+                cancel the event
+                message "{@P} &rPermission Denied: Use a Iron Ingot on this chest sign and choose destroy."
+            else:
+                cancel the event
+                message "&4{@P} &rPermission Denied: chest belongs to %{sign.name}% and is locked!"
+        else:
+            cancel the event
+            message "&4{@P} &rPermission Denied: chest belongs to %{sign.name}%"
+        
+        
+Command /lockchest:
+        description: right click sign on chest to lockchest
+        usage: Must use piece of paper for lockchest
+        permission: skrips.user
+        executable by: player and console
+        aliases: N/A
+        trigger:
+                loop blocks in radius 2 around player:
+                        loop-block-1 is sign
+                        set line 2 of loop-block-1 to "&4Locked"
+                        set line 3 of loop-block-1 to "&b"
+                        message "&e{@P}&r Locked for %player% access only"
+
+
+Command /unlockchest:
+        description: right click sign on chest to unlockchest
+        usage: Must use iron ingot for unlockchest
+        permission: skrips.user
+        executable by: player and console
+        aliases: N/A
+        trigger:
+                loop blocks in radius 2 around player:
+                        loop-block-1 is sign
+                        set line 2 of loop-block-1 to "&4unLocked"
+                        set line 3 of loop-block-1 to "&b"
+                        message "&e{@P}&rChest unlocked, open to public"
+
+                        
+                        
+Command /destroychest:
+        description: destroy locked chest
+        usage: must use Iron ingot to destroy
+        permission: skript.user
+        executable by: player and console
+        aliases: N/A
+        trigger:
+                loop blocks in radius 2 around player:
+                        loop-block-1 is chest
+                        if "%player%" = "%{sign.lock.%player%}%":
+                                set loop-block-1 to air
+                        else:
+                                message "{@P} Permission Denied: can not destroy chest"
+                loop blocks in radius 2 around player:
+                        loop-block-1 is sign
+                        if "%player%" = "%{sign.lock.%player%}%":
+                                set loop-block-1 to air
+                        else:
+                                message "{@P} Permission Denied: can not destroy sign"
