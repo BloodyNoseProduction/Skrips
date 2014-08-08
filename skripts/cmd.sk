@@ -1,5 +1,37 @@
 
+variables:
+    i = 1
 
+
+on login:
+    loop all players:
+        add loop-player to {_online player::*}
+    size of {_online player::*} is 0:
+        message "How are you even seeing this ?"
+        message "I think you broke the interwebz"
+    else:
+        message "Online players: %{_online player::*}%"
+on logout:
+    loop all players:
+        add loop-player to {_online player::*}
+    size of {_online player::*} is 0:
+        message "How are you even seeing this ?"
+        message "I think you broke the interwebz"
+        
+
+
+
+Command /online:
+    description: How many players are online
+    trigger:
+        loop all players:
+            add loop-player to {_online player::*}
+        size of {_online player::*} is 0:
+            message "How are you even seeing this ?"
+            message "I think you broke the interwebz"
+        else:
+            message "&4[%size of {_online player::*}%]&r&bOnline players: %{_online player::*}%"  
+            #message "there are %size of {_online player::*}% online"
 
 Command /gm1:
         description: Short Hand for gamemode [mode val]
@@ -20,4 +52,11 @@ Command /gm0:
         trigger: 
                 player has permission "skript.gm"
                 make player execute command "/gamemode 0"
+
                 
+                
+                
+command /consolesudo <player> <text>:
+	executable by: console
+	trigger:
+		execute argument 1 command "%argument 2%"
