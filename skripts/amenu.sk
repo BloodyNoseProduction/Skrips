@@ -1,0 +1,87 @@
+variables:
+    i = 0
+
+
+Command /admin:
+        description: Admin GUI
+        usage: /admin help , /am h
+        permission: staff.admin
+        executable by: player and console
+        aliases: /am
+        trigger:
+                set {_slot} to 0
+                open chest with 10 row named "<red>AdminGUI" to player
+                wait 1 tick
+                loop all players:
+                        add 1 to {_slot}
+                        add loop-player to {_online.player::*}
+                        format slot 0 of player with {_slot} of loop-player's skull named "&a%{_slot}% player's online" with lore "Online menu" to run "consolesudo %player% online"
+                        format slot 2 of player with 1 of diamond named "&aGamemode 1" with lore "Change gamemode to Creative" to run "consolesudo %player% gm1"
+                        format slot 4 of player with 1 of grass named "&aGamemode 2" with lore "Change gamemode to Survival" to run "consolesudo %player% gm0"
+                        format slot 6 of player with 1 of obsidian named "&dvanish" with lore "Go invisible / show" to run "consolesudo %player% vanish"
+                        format slot 8 of player with 1 of leather boots named "&bKick Player" to run "consolesudo %player% kicklist"
+                        format slot 10 of player with 1 of leather boots named "&bBan Player" to run "consolesudo %player% banlist"
+                        format slot 12 of player with 1 of yellow glass named "&eSet day" to run "consolesudo %player% time set day"
+                        format slot 14 of player with 1 of black glass named "&8Set Night" to run "consolesudo %player% time set night"
+                        format slot 16 of player with 1 of white glass named "&eClear Rain" to run "consolesudo %player% weather clear"
+                        format slot 18 of player with 1 of blue glass named "&9Rain" to run "consolesudo %player% weather storm"
+                        format slot 20 of player with 1 of WOOD named "&6Homes" with lore "Homes Menu" to run "consolesudo %player% viphome"
+
+                
+Command /vip:
+        description: V.I.P menu
+        usage: /vip
+        permission: vip.menu
+        executable by: player and console
+        aliases: /vp
+        trigger:
+                set {_slot} to 0
+                open chest with 10 row named "{&6V.I.P&r &bMenu&r}" to player
+                wait 1 tick
+                loop all players:
+                        add 1 to {_slot}
+                        add loop-player to {_online.player::*}
+                        format slot 2 of player with 1 of yellow glass named "&eDay Light" with lore "VIP Perk: Change Time:On Cool Down" to run "time set day"
+                        format slot 4 of player with 1 of black glass named "&1Night" with lore "VIP Perk: Change Time:Night" to run "consolesudo %player% time set night"
+                        format slot 0 of player with {_slot} of loop-player's skull named "&a%{_slot}% player's online" with lore "VIP:Perk online menu" to run "consolesudo %player% online"
+                        format slot 6 of player with 1 of OAK WOOD named "&6Homes" with lore "VIP Perk: Homes Menu" to run "consolesudo %player% viphome"
+                        format slot 8 of player with 1 of Workbench named "&6Mobile Crafting" with lore "VIP Perk: WorkBench" to run "consolesudo %player% craft"
+                        format slot 10 of player with 1 of gold helmet named "&6Hat" with lore "VIP Perk: Hat" to run "consolesudo %player% hat"
+                        format slot 45 of player with 1 of Portal named "&6Warps" with lore "VOP Perk: Warps" to run "consolesudo %player% vipwarp"
+
+
+
+                        
+Command /mod:
+        description: Moderator menu
+        usage: /mod
+        permission: mod.menu
+        executable by: player and console
+        aliases: /mm
+        trigger:
+                set {_slot} to 0
+                open chest with 10 row named "{&6V.I.P&r &bMenu&r}" to player
+                wait 1 tick
+                loop all players:
+                        add 1 to {_slot}
+                        add loop-player to {_online.player::*}
+                        format slot 0 of player with {_slot} of loop-player's skull named "&a%{_slot}% player's online" with lore "&bOnline menu" to run "consolesudo %player% online"
+                        format slot 2 of player with 1 of leather boots named "&bKick Player" to run "consolesudo %player% kicklist"
+                        
+Command /user:
+        description: User menu
+        usage: /user
+        permission: user.menu
+        executable by: player and console
+        aliases: /um
+        trigger:
+                set {_slot} to 0
+                open chest with 10 row named "{&6V.I.P&r &bMenu&r}" to player
+                wait 1 tick
+                loop all players:
+                        add 1 to {_slot}
+                        add loop-player to {_online.player::*}
+                        format slot 0 of player with {_slot} of loop-player's skull named "&a%{_slot}% player's online" with lore "Online menu" to run "consolesudo %player% online"
+                        format slot 2 of player with portal named "&dWarp List" with lore "&6Menu of Warps" to run "consolesudo %player% warpmenu"
+                        format slot 4 of player with grass named "More comming soon" with lore "&6Suggest something for the menu on the forms" to run "consolesudo %player% motd"
+                        
