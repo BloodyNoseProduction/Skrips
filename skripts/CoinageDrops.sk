@@ -1,0 +1,58 @@
+#zendrop - V0.1
+#Tested on: Skript V2.1.2
+#Script by: 2toetommy
+#
+
+Options:
+    P: &2[Lost Mint]&a
+
+on death of zombie:
+    loop players in radius 10 around victim:
+        if damage is caused by attack:
+            chance of 2%:
+                execute console command "givecoins %attacker% zen zan 1"
+                broadcast "{@P} %attacker% found a &6zan note on %victim%"
+
+on death of skeleton:
+    loop players in radius 10 around victim:
+        if damage is caused by attack:
+            chance of 2%:
+                execute console command "givecoins %attacker% zen zan 1"
+                broadcast "{@P} %attacker% found a &6zan note on %victim%"
+                
+on death of cave Spider:
+    loop players in radius 10 around victim:
+        if damage is caused by attack:
+            chance of 2%:
+                execute console command "givecoins %attacker% zen zan 1"
+                broadcast "{@P} %attacker% found a &6zan note on %victim%"
+                
+on death of spider:
+    loop players in radius 10 around victim:
+        if damage is caused by attack:
+            chance of 2%:
+                execute console command "givecoins %attacker% zen zan 1"
+                broadcast "{@P} %attacker% found a &6zan note on %victim%"
+
+On sign change:
+    cancel the event 
+    loop blocks in radius 3 around player:
+        loop-block-1 is sign
+        if line 1 of loop-block-1 is "[zen]":
+            uncancel the event
+            if line 2 of loop-block-1 is "[exchange]":
+                uncancel the event
+                set line 1 of loop-block-1 to "{@P}"
+                set line 2 of loop-block-1 to "&4[Exchange]"
+        else:
+            uncancel the event
+
+On rightclick on sign:
+    if player is holding a iron ingot:
+        loop blocks in radius 4 around player:
+            loop-block-1 is sign
+            if line 1 of loop-block-1 is "{@P}":
+                if line 2 of loop-block-1 is "&4[Exchange]":
+                    loop all items in inventory of player:
+                        loop-block is paper
+                        message "Test"

@@ -41,7 +41,7 @@ Command /gm1:
         aliases: /creative
         trigger: 
                 player has permission "skript.gm"
-                set player's game mode to creative
+                make player execute command "/gamemode 1"
                 
 Command /gm0:
         description: Short Hand for gamemode [mode val]
@@ -51,7 +51,7 @@ Command /gm0:
         aliases: /survival
         trigger: 
                 player has permission "skript.gm"
-                set player's game mode to survival
+                make player execute command "/gamemode 0"
 
                 
                 
@@ -59,4 +59,87 @@ Command /gm0:
 command /consolesudo <player> <text>:
 	executable by: console
 	trigger:
-		execute argument 1 command "%argument 2%"
+		make argument 1 execute command "%argument 2%"
+
+
+        
+command /kicklist:
+        description: Admin GUI (Kick List)
+        usage: /admin help , /am h
+        permission: staff.admin
+        executable by: player and console
+        aliases: /am
+        trigger:
+                close inventory view of player
+                open chest with 10 row named "<red>AdminGUI <blue>Kick <white>" to player
+                wait 1 tick
+                set {_slot} to -1
+                loop all players:
+                        add 1 to {_slot}
+                        format slot {_slot} of player with loop-player's skull named "&a%loop-player%" to run "consolesudo %player% kick %loop-player%"
+command /banmuenu <player>:
+        description: admin ban menu
+        usage: /admin
+        permission: staff.admin
+        executable by: player and console
+        aliases: /am
+        trigger:
+                close inventory view of player
+                open chest with 1 row named "<red>Admin Ban/kick" to player
+                wait 1 tick
+                format slot 0 of player with anvil named "&aBan %argument 1% 1hr" to run "consolesudo %player% tempban %argument 1% 1h"
+                format slot 1 of player with anvil named "&aBan %argument 1% 1d" to run "consolesudo %player% tempban %argument 1% 1d"
+                format slot 2 of player with anvil named "&aBan %argument 1% 7d" to run "consolesudo %player% tempban %argument 1% 7d"
+                format slot 3 of player with anvil named "&aBan %argument 1% 30d" to run "consolesudo %player% tempban %argument 1% 30d"
+                format slot 4 of player with anvil named "&aBan %argument 1% FOREVER" to run "consolesudo %player% ban %argument 1%"
+
+
+command /banlist:
+        description: Admin GUI (ban List)
+        usage: /admin help , /am h
+        permission: staff.admin
+        executable by: player and console
+        aliases: /am
+        trigger:
+                close inventory view of player
+                open chest with 10 row named "<red>AdminGUI <blue>Banlist <white>" to player
+                wait 1 tick
+                set {_slot} to 0
+                loop all players:
+                        add 1 to {_slot}
+                        wait 1 tick
+                        format slot {_slot} of player with loop-player's skull named "&a%loop-player%" to run "consolesudo %player% banmuenu %loop-player%"
+
+command /viphome:
+        description: vip home menu
+        usage: /vip
+        permission: vip.menu
+        executable by: player and console
+        aliases: /vph
+        trigger:
+                close inventory view of player
+                open chest with 10 row named "<red>VIP Home menu" to player
+                wait 1 tick
+                format slot 0 of player with 1 of grass named "home 1" with lore "Your first home set" to run "consolesudo %player% home 1"
+                format slot 2 of player with 1 of grass named "home 2" with lore "Your second home set" to run "consolesudo %player% home 2"
+                format slot 4 of player with 1 of grass named "home 3" with lore "Your third home set" to run "consolesudo %player% home 3"                        
+                format slot 6 of player with 1 of grass named "home 4" with lore "Your third home set" to run "consolesudo %player% home 4"                        
+                format slot 8 of player with 1 of grass named "home 5" with lore "Your third home set" to run "consolesudo %player% home 5"
+
+command /vipwarp:
+        description: vip warp menu
+        usage: /vipwarp
+        permission: vip.menu
+        executable by: player and console
+        aliases: /vw
+        trigger:
+                close inventory view of player
+                open chest with 5 row named "<red>VIP Warp menu" to player
+                wait 1 tick
+                format slot 36 of player with 1 of paper named "&4Back" with lore "" to run "consolesudo %player% vip"
+                format slot 44 of player with 1 of paper named "&4More" with lore "&dComming soon" to run "consolesudo %player% vip"
+                format slot 0 of player with 1 of portal named "&6VIP Lobby" with lore "&6VIP Lobby" to run "consolesudo %player% spawn"
+                format slot 2 of player with 1 of portal named "&2Spawn" with lore "&6Spawn" to run "consolesudo %player% warp spawn"
+                format slot 4 of player with 1 of portal named "&2Towny Random" with lore "&6random Towny Warp" to run "consolesudo %player% rtp towny"
+                format slot 6 of player with 1 of portal named "&2Mining random" with lore "&6 Random mining Warp" to run "consolesudo %player% rtp mining"
+                format slot 8 of player with 1 of portal named "&2Town Spawn" with lore "&bTown Spawn" to run "consolesudo %player% t spawn"
