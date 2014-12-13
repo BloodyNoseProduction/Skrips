@@ -1,0 +1,42 @@
+command /rtp [<player=%player%>] <text>:
+    description: Teleports player to the coordinates <x> <y> <z>
+    trigger:
+        make argument 1 execute command "warp %argument 2%"
+        wait 4 ticks
+        set {_currentlocation} to location of arg-player
+        wait 1 tick
+        set {_relative.x} to rounded down the x coord of {_currentlocation}
+        wait 1 tick
+        set {_random.x} to a random integer between -500 and 500
+        wait 1 tick
+        set {_relative.y} to rounded down the y coord of {_currentlocation}
+        wait 1 tick
+        set {_random.y} to 100
+        wait 1 tick
+        set {_relative.z} to rounded down the z coord of {_currentlocation}
+        wait 1 tick
+        set {_random.z} to a random integer between -500 and 500
+        wait 1 tick
+        set {_destinationx} to the block {_random.x} west of the block at {_currentlocation}
+        wait 1 tick
+        set {_destinationy} to the block {_random.z} north of the block at {_destinationx}
+        wait 1 tick
+        set {_destination} to the block 100 below the block at {_destinationy}
+        wait 1 tick
+        set {god.enabled.%player%} to 1
+        loop blocks above {_destination}:
+            loop-block is air:
+                set {_num} to loop-block
+                teleport player above {_num}
+            set {_num} to loop-block
+        execute command "mcgod %player%"
+        apply Nausea 2 to the entity for 10 seconds
+        apply Regeneration 3 to entity for 15 seconds
+        apply Blindness 2 to the entity for 10 seconds 
+        apply Invisibility 1 to the entity for 30 seconds
+        set {_destination} to {_currentlocation}
+        wait 10 seconds
+        message "Teleport Safty Off"
+        execute command "mcgod %player%"
+        set {god.enabled.%player%} to 0
+        stop
